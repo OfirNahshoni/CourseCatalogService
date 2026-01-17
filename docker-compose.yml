@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16.3-alpine
+    container_name: courses_postgres
+    environment:
+      POSTGRES_USER: udemy_training_user
+      POSTGRES_PASSWORD: ofir221
+      POSTGRES_DB: courses_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:

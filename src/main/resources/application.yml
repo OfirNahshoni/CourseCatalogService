@@ -1,0 +1,48 @@
+# src/main/resources/application.yml
+
+spring:
+  application:
+    name: course-catalog-service
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/courses_db
+    username: udemy_training_user
+    password: ofir221
+  jpa:
+#    database: h2
+#    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop   # TODO: remove on production (re-creates the db!)
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  h2:
+    console:
+      enabled: true
+message: Hello from default profile
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+message: Hello from prod profile
+
+---
+spring:
+  config:
+    activate:
+      on-profile: non-prod
+message: Hello from non-prod profile
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+message: Hello from test profile
