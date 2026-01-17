@@ -14,7 +14,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
     hibernate:
-      ddl-auto: create-drop   # TODO: remove on production (re-creates the db!)
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
