@@ -10,17 +10,42 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.utility.DockerImageName
 import java.time.Duration
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@Testcontainers
 class InstructorControllerIntgTest {
     @LocalServerPort
     private var port: Int = 0
     lateinit var webTestClient: WebTestClient
     @Autowired
     lateinit var instructorRepository: InstructorRepository
+
+    // test-conainers object
+    companion object {
+        @Container
+        val postgresDB = PostgreSQLContainer<Nothing>(DockerImageName.parse("postgres:16.3-alpine")).apply {
+            withDatabaseName("courses_db")
+            withUsername("udemy_training_user")
+            withPassword("ofir221")
+        }
+
+        @JvmStatic
+        @DynamicPropertySource
+        fun properties(registry: DynamicPropertyRegistry) {
+            registry.add("spring.datasource.url", postgresDB::getJdbcUrl)
+            registry.add("spring.datasource.username", postgresDB::getUsername)
+            registry.add("spring.datasource.password", postgresDB::getPassword)
+        }
+    }
 
     @BeforeEach
     fun setup() {

@@ -47,5 +47,5 @@ fun instructorDTO(
 
 fun instructorEntity(
     id: Int? = null,
-    name: String = "Ofir Nahshoni"
+    name: String = "Moshe Rabenoo"
 ) = Instructor(id, name)
